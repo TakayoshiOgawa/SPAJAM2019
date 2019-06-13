@@ -7,6 +7,8 @@ public class TouchManager : SingletonMonoBehaviour<TouchManager>
     const int TOUCH_COUNT = 5;
     private TouchInfo[] touches = new TouchInfo[TOUCH_COUNT];
 
+    public int TouchCount { get { return Input.touchCount; } }
+
     /// <summary>
     /// 生成時に実行
     /// </summary>
@@ -166,7 +168,7 @@ public class TouchManager : SingletonMonoBehaviour<TouchManager>
         return Vector3.zero;
     }
 
-    private float startPinchScale = 1F;
+    private float startPinchScale = 0F;
     /// <summary>
     /// ピンチの拡大率を取得
     /// </summary>
@@ -176,13 +178,13 @@ public class TouchManager : SingletonMonoBehaviour<TouchManager>
         {
             if(Tap(1))
             {
-                startPinchScale = Vector3.Distance(Position(0), Position(1)) + 1F;
+                startPinchScale = Vector3.Distance(Position(0), Position(1));
             }
             else if(Hold(1))
             {
-                return Vector3.Distance(Position(0), Position(1)) - startPinchScale;
+                return startPinchScale - Vector3.Distance(Position(0), Position(1));
             }
         }
-        return 1F;
+        return 0F;
     }
 }

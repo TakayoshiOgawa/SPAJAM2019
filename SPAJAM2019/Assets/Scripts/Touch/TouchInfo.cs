@@ -7,12 +7,12 @@ public class TouchInfo
     // 共通のタッチ状態
     public enum Phase
     {
-        None,        // なし
+        None = -1,   // なし
         Began,       // タッチ開始
-        Canceled,    // キャンセル
-        Ended,       // タッチ終了
         Moved,       // スワイプ
         Stationary,  // ホールド
+        Ended,       // タッチ終了
+        Canceled,    // キャンセル
     }
 
     public bool touched { get { return Input.touchCount > ID; } }
@@ -79,7 +79,7 @@ public class TouchInfo
     {
         get
         {
-            return GetTouch().Equals(Phase.Canceled | Phase.Ended);
+            return GetTouch().Equals(Phase.Ended) || GetTouch().Equals(Phase.Canceled);
         }
     }
 
