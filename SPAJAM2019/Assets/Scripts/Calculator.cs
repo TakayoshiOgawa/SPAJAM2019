@@ -4,6 +4,23 @@ using UnityEngine;
 
 public class Calculator : MonoBehaviour
 {
+    // 不快指数の値
+    private readonly static float[] DISCOMFORT_PATTERN = new float[] {
+        55F, // 寒い
+        60F, // 少し寒い
+        65F, // 何も感じない
+        70F, // 少し暑い
+        75F, // 暑い
+    };
+    // 不快指数の評価値
+    private readonly static int[] POINT_PATTERN = new[] {
+        -2, // 寒い
+        -1, // 少し寒い
+         0, // 何も感じない
+         1, // 少し暑い
+         2, // 暑い
+    };
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,4 +90,20 @@ public class Calculator : MonoBehaviour
 
 		return _Tn;
 	}
+
+    /// <summary>
+    /// 不快指数の評価値を取得
+    /// </summary>
+    private static int GetPoint(int discomfort)
+    {
+        for (int index = 0; index < DISCOMFORT_PATTERN.Length; index++)
+        {
+            if (discomfort < DISCOMFORT_PATTERN[index])
+            {
+                return POINT_PATTERN[index];
+            }
+        }
+        // 例外ケースは「何も感じない」を返す
+        return default;
+    }
 }
