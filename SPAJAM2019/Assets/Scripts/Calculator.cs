@@ -49,9 +49,9 @@ public class Calculator : MonoBehaviour
 	float BasicMetabolism(uint _sex, float _weight, float _hight, uint _age)
 	{
 		float _kcal = 0.0f;
-		if(_sex == 1) {
+		if(_sex == 0) {
 			_kcal = 13.397f * _weight + 4.799f * _hight - 5.677f * _age + 88.362f;
-		}else if (_sex == 2) {
+		}else if (_sex == 1) {
 			_kcal = 9.247f * _weight + 3.098f * _hight - 4.33f * _age + 447.593f;
 		}
 
