@@ -1,23 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MiniJSON;
 
 public class WeatherWriter : MonoBehaviour
 {
 
 	public UnityEngine.UI.Text text;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-		StartCoroutine(SendWeb("Ogaki"));
-	}
+	public Weather.WeatherData weatherData;
 
-    // Update is called once per frame
-    void Update()
+	// Start is called before the first frame update
+	void Start()
     {
-        
-    }
+		StartCoroutine(SendWeb("Tokyo"));
+	}
 
 	IEnumerator SendWeb(string city)
 	{
@@ -29,9 +26,57 @@ public class WeatherWriter : MonoBehaviour
 			text.text = request.error;
 			Debug.LogError(request.error);
 			yield break;
+
 		} else {
-			text.text = request.downloadHandler.text;
-			Debug.Log(request.downloadHandler.text);
+			// データ書き込み
+			WriteWeatherData(request.downloadHandler.text);
 		}
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="json"></param>
+	void WriteWeatherData(string json)
+	{
+		//(1階層目)
+		var jsonData = MiniJSON.Json.Deserialize(json) as Dictionary<string, object>;
+		//(2階層目)
+		var coord = jsonData["coord"] as Dictionary<string, object>;
+		var weather = (IList)jsonData["weather"];
+		var main = jsonData["main"] as Dictionary<string, object>;
+		var visibility = jsonData["visibility"];
+		var wind = jsonData["wind"] as Dictionary<string, object>;
+		var clouds = jsonData["clouds"] as Dictionary<string, object>;
+		var dt = jsonData["dt"];
+		var sys = jsonData["sys"] as Dictionary<string, object>;
+		var timezone = jsonData["timezone"];
+		var name = jsonData["name"];
+		var cod = jsonData["cod"];
+		//(3階層目)
+		var weather_0 = (IDictionary)weather[0];
+
+		Debug.Log(json);
+
+		//気温
+		double.TryParse(main["temp"].ToString(), out weatherData.temp);
+
+		//最低気温
+		double.TryParse(main["temp_min"].ToString(), out weatherData.tempMin);
+
+		//最高気温
+		double.TryParse(main["temp_max"].ToString(), out weatherData.tempMax);
+
+		//天気
+		weatherData.weather = weather_0["main"].ToString();
+
+		//湿度
+		double.TryParse(main["humidity"].ToString(), out weatherData.humidity);
+
+		//風速
+		double.TryParse(wind["speed"].ToString(), out weatherData.windSpeed);
+
+		// アイコン
+		weatherData.icon = weather_0["icon"].ToString();
 	}
 }

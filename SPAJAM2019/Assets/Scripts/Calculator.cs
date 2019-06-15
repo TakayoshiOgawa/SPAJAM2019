@@ -104,6 +104,6 @@ public class Calculator : MonoBehaviour
             }
         }
         // 例外ケースは「何も感じない」を返す
-        return default;
+        return 0;
     }
 }
