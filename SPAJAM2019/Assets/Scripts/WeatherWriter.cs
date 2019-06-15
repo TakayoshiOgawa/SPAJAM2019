@@ -9,14 +9,7 @@ public class WeatherWriter : MonoBehaviour
 	public UnityEngine.UI.Text text;
 
 	public Weather.WeatherData weatherData;
-
-	// Start is called before the first frame update
-	void Start()
-    {
-        // データ書き込み
-        StartCoroutine(SendWeb("Tokyo"));
-	}
-
+    
     /// <summary>
     /// リクエストを発行
     /// </summary>
