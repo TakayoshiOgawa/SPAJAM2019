@@ -13,25 +13,46 @@ public class WeatherWriter : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		StartCoroutine(SendWeb("Tokyo"));
+        // データ書き込み
+        StartCoroutine(SendWeb("Tokyo"));
 	}
 
-	IEnumerator SendWeb(string city)
-	{
-		var request = UnityEngine.Networking.UnityWebRequest.Get("http://api.openweathermap.org/data/2.5/weather?q="+ city + ",jp&units=metric&appid=8bb65e0054153cae583d41d4296b4974");
+    /// <summary>
+    /// リクエストを発行
+    /// </summary>
+    public void Request(string city)
+    {
+        // 都市名を指すURLを作成
+        var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + ",jp&units=metric&appid=8bb65e0054153cae583d41d4296b4974";
+        // ウェブへリクエストを送る
+        StartCoroutine(SendWeb(url, (txt) =>
+        {
+            // データ書き込み
+            WriteWeatherData(txt);
+        }));
+    }
 
-		yield return request.SendWebRequest();
+    /// <summary>
+    /// ウェブへの送信
+    /// </summary>
+    IEnumerator SendWeb(string url, System.Action<string> finishCallback)
+    {
+        var request = UnityEngine.Networking.UnityWebRequest.Get(url);
 
-		if (request.isHttpError || request.isNetworkError) {
-			text.text = request.error;
-			Debug.LogError(request.error);
-			yield break;
+        yield return request.SendWebRequest();
 
-		} else {
-			// データ書き込み
-			WriteWeatherData(request.downloadHandler.text);
-		}
-	}
+        if (request.isHttpError || request.isNetworkError)
+        {
+            text.text = request.error;
+            Debug.LogError(request.error);
+            yield break;
+
+        }
+        else
+        {
+            if (finishCallback != null) finishCallback(request.downloadHandler.text);
+        }
+    }
 
 	/// <summary>
 	/// 
@@ -78,5 +99,7 @@ public class WeatherWriter : MonoBehaviour
 
 		// アイコン
 		weatherData.icon = weather_0["icon"].ToString();
+
+
 	}
 }
