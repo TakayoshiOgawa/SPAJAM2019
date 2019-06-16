@@ -19,28 +19,26 @@ public class UserSettingManager : SingletonMonoBehaviour<UserSettingManager>
 
 	[SerializeField]
 	Dropdown sex;
-
-	private void Start()
-	{
-		
-	}
-
-	private void Update()
-	{
-		
-	}
-
+	
+	[SerializeField]
+	MainScene scene;
+	
 	/// <summary>
 	/// 戻るボタン
 	/// </summary>
 	public void TouchBackButton()
 	{
 		// 入力情報をスクリプタブルオブジェクトへ保存。
-		userStatus.age = uint.Parse(age.text);
-		userStatus.hight = uint.Parse(hight.text);
-		userStatus.weight = uint.Parse(weight.text);
+		if(age.text != "")
+			userStatus.age = uint.Parse(age.text);
+		if(hight.text != "")
+			userStatus.hight = uint.Parse(hight.text);
+		if(weight.text != "")
+			userStatus.weight = uint.Parse(weight.text);
+
 		userStatus.sex = (uint)sex.value;
 
 		//TODO:ここに前の画面へ戻る処理。
+		scene.BackToMainLayer();
 	}
 }

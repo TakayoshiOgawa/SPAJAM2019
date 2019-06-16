@@ -5,9 +5,6 @@ using MiniJSON;
 
 public class WeatherWriter : MonoBehaviour
 {
-
-	public UnityEngine.UI.Text text;
-
 	public Weather.WeatherData weatherData;
     
     /// <summary>
@@ -36,7 +33,6 @@ public class WeatherWriter : MonoBehaviour
 
         if (request.isHttpError || request.isNetworkError)
         {
-            text.text = request.error;
             Debug.LogError(request.error);
             yield break;
 

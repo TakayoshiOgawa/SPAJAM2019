@@ -12,6 +12,7 @@ namespace Weather
 		public double humidity;
 		public double windSpeed;
 		public string icon;
+		public double sunPower;
 
         public string WeatherJP()
         {
@@ -23,8 +24,14 @@ namespace Weather
                 { "rain", "雨" },
                 { "snow", "雪" },
                 { "clear", "晴れ" },
-                { "clouds", "雲" },
-            };
+                { "clouds", "雲り" },
+				{ "Thunderstorm ", "雷" },
+				{ "Drizzle", "雨" },
+				{ "Rain", "雨" },
+				{ "Snow", "雪" },
+				{ "Clear", "晴れ" },
+				{ "Clouds", "雲り" },
+			};
 
             // 天気の名称に含まれるものがあれば日本語で返す
             foreach (var jp in jp_dic)
@@ -38,5 +45,24 @@ namespace Weather
             // 見つからない場合は英語のまま返す
             return weather;
         }
+
+		public double SunPower()
+		{
+			double sp = 0.0f;
+			var sunpowDic = new Dictionary<string, double>()
+			{
+				{ "雨", 0.1},
+				{ "雲り",0.5},
+				{ "晴れ", 0.8},
+			};
+
+			foreach (var sunpow in sunpowDic) {
+				if (weather.Contains(sunpow.Key)) {
+					return sunpow.Value;
+				}
+			}
+
+			return sp;
+		}
 	}
 }

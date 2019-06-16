@@ -24,7 +24,7 @@ public class CityNameList
 		{ City.Sapporo, "Sapporo" },
 		{ City.Tokyo, "Tokyo" },
 		{ City.Osaka, "Osaka" },
-		{ City.Okinawa, "Naha" },
+		{ City.Okinawa, "Naha-shi" },
 	};
 }
 
