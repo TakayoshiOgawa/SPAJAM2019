@@ -26,6 +26,9 @@ public class MainScene : MonoBehaviour
 
 	bool isExec = false;
 
+	[SerializeField]
+	GameObject fadeObject;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -47,6 +50,7 @@ public class MainScene : MonoBehaviour
 			return;
 
 		isExec = true;
+		fadeObject.SetActive(true);
 		weatherWriter.Request(CityNameList.cityList[(City)cityName.value]);
 
 		Invoke("CalcResult", 3.0f);
@@ -136,6 +140,8 @@ public class MainScene : MonoBehaviour
 		mainLayer.SetActive(false);
 
 		DestroyerLayer.SetActive(true);
+
+		fadeObject.SetActive(false);
 
 		isExec = false;
 	}
